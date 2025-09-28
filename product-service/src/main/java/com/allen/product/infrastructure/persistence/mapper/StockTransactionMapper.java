@@ -10,6 +10,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface StockTransactionMapper {
     StockTransaction entityToStockTransaction(StockTransactionEntity entity);
-    StockTransactionEntity stockTransactiontoEntity(StockTransaction domain);
+    StockTransactionEntity stockTransactionToEntity(StockTransaction domain);
     List<StockTransaction> listEntityToStockTransactionList(List<StockTransactionEntity> entities);
 }

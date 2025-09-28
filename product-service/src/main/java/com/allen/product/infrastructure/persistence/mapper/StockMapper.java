@@ -13,8 +13,7 @@ import org.mapstruct.Named;
 public interface StockMapper {
 
     @Mappings({
-            @Mapping(target = "productId", source = "productEntity.productId"),
-            @Mapping(target = "productSku", source = "productEntity.sku"),
+            @Mapping(target = "productId", source = "product.productId"),
             @Mapping(target = "warehouseId", source = "warehouse.warehouseId"),
             @Mapping(target = "warehouseName", source = "warehouse.name"),
             @Mapping(target = "stockId", source = "stockId"),
@@ -25,7 +24,7 @@ public interface StockMapper {
     Stock stockEntityToStock(StockEntity entity);
 
     @Mappings({
-            @Mapping(target = "productEntity", source = "productId", qualifiedByName = "productEntityFromId"),
+            @Mapping(target = "product", source = "productId", qualifiedByName = "productEntityFromId"),
             @Mapping(target = "warehouse", source = "warehouseId", qualifiedByName = "warehouseEntityFromId"),
             @Mapping(target = "stockId", source = "stockId"),
             @Mapping(target = "quantityOnHand", source = "quantityOnHand"),

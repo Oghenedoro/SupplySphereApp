@@ -99,6 +99,18 @@ databaseChangeLog:
             referencedColumnNames: product_id
             constraintName: fk_warehouse_product
 
+# New changeSet added to removed product_id column and foreign key constraint
+  - changeSet:
+      id: 20250821-01-drop-product-id-from-warehouse
+      author: allen
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: warehouse
+            constraintName: fk_warehouse_product
+        - dropColumn:
+            columnName: product_id
+            tableName: warehouse
+
   - changeSet:
       id: 20250821-01-create-stock-transaction-table
       author: allen
@@ -136,3 +148,4 @@ databaseChangeLog:
               - column:
                   name: transaction_date
                   type: TIMESTAMP
+

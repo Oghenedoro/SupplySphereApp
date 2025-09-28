@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-23T20:14:20+0200",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.7 (OpenLogic)"
+    date = "2025-09-28T03:03:45+0200",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.42.50.v20250628-1110, environment: Java 21.0.7 (Eclipse Adoptium)"
 )
 @Component
 public class StockMapperImpl implements StockMapper {
@@ -23,7 +23,6 @@ public class StockMapperImpl implements StockMapper {
         }
 
         Long productId = null;
-        String productSku = null;
         Long warehouseId = null;
         String warehouseName = null;
         Long stockId = null;
@@ -31,8 +30,7 @@ public class StockMapperImpl implements StockMapper {
         Integer quantityReserved = null;
         LocalDate lastUpdated = null;
 
-        productId = entityProductEntityProductId( entity );
-        productSku = entityProductEntitySku( entity );
+        productId = entityProductProductId( entity );
         warehouseId = entityWarehouseWarehouseId( entity );
         warehouseName = entityWarehouseName( entity );
         stockId = entity.getStockId();
@@ -40,7 +38,7 @@ public class StockMapperImpl implements StockMapper {
         quantityReserved = entity.getQuantityReserved();
         lastUpdated = entity.getLastUpdated();
 
-        Stock stock = new Stock( stockId, productId, productSku, warehouseId, warehouseName, quantityOnHand, quantityReserved, lastUpdated );
+        Stock stock = new Stock( stockId, productId, warehouseId, warehouseName, quantityOnHand, quantityReserved, lastUpdated );
 
         return stock;
     }
@@ -53,7 +51,7 @@ public class StockMapperImpl implements StockMapper {
 
         StockEntity stockEntity = new StockEntity();
 
-        stockEntity.setProductEntity( productEntityFromId( stock.productId() ) );
+        stockEntity.setProduct( productEntityFromId( stock.productId() ) );
         stockEntity.setWarehouse( warehouseEntityFromId( stock.warehouseId() ) );
         stockEntity.setStockId( stock.stockId() );
         stockEntity.setQuantityOnHand( stock.quantityOnHand() );
@@ -63,20 +61,12 @@ public class StockMapperImpl implements StockMapper {
         return stockEntity;
     }
 
-    private Long entityProductEntityProductId(StockEntity stockEntity) {
-        ProductEntity productEntity = stockEntity.getProductEntity();
-        if ( productEntity == null ) {
+    private Long entityProductProductId(StockEntity stockEntity) {
+        ProductEntity product = stockEntity.getProduct();
+        if ( product == null ) {
             return null;
         }
-        return productEntity.getProductId();
-    }
-
-    private String entityProductEntitySku(StockEntity stockEntity) {
-        ProductEntity productEntity = stockEntity.getProductEntity();
-        if ( productEntity == null ) {
-            return null;
-        }
-        return productEntity.getSku();
+        return product.getProductId();
     }
 
     private Long entityWarehouseWarehouseId(StockEntity stockEntity) {

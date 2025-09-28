@@ -24,7 +24,7 @@ public class ProductService implements ProductUseCase {
 
     @Override
     public List<Product> getAllProducts() {
-        List<Product> products = productRepositoryPort.findAll();
+        List<Product> products = productRepositoryPort.findAllProduct();
         return products;
     }
     @Override
@@ -32,8 +32,7 @@ public class ProductService implements ProductUseCase {
         if (id == null) {
             throw new IllegalArgumentException("Product ID cannot be null");
         }
-        return Optional.ofNullable(productRepositoryPort.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product does not exist!")));
+        return productRepositoryPort.findByProductId(id);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class ProductService implements ProductUseCase {
                 sku,
                 product.stocks()
         );
-        return productRepositoryPort.save(productWithSku);
+        return productRepositoryPort.saveProduct(productWithSku);
     }
 
 
@@ -70,7 +69,7 @@ public class ProductService implements ProductUseCase {
     @Override
     public Product updateProduct(Long productId, Product updatedProductData) {
 
-        Product existingProduct = productRepositoryPort.findById(productId)
+        Product existingProduct = productRepositoryPort.findByProductId(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found !"));
 
         Product updatedProduct = new Product(

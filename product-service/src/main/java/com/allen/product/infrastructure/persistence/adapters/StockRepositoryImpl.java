@@ -5,8 +5,12 @@ import com.allen.product.domain.port.StockRepositoryPort;
 import com.allen.product.infrastructure.persistence.entity.StockEntity;
 import com.allen.product.infrastructure.persistence.mapper.StockMapper;
 import com.allen.product.infrastructure.persistence.springdataJpaRepository.StockRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +20,7 @@ public class StockRepositoryImpl implements StockRepositoryPort {
 
     private final StockRepository stockRepository;
     private final StockMapper stockMapper;
+    private static final Logger logger = LoggerFactory.getLogger(StockRepositoryImpl.class);
 
     public StockRepositoryImpl(@Lazy StockRepository stockRepository, StockMapper stockMapper) {
         this.stockRepository = stockRepository;
@@ -23,27 +28,33 @@ public class StockRepositoryImpl implements StockRepositoryPort {
     }
 
     @Override
-    public Stock save(Stock stock) {
+    public Stock saveStock(Stock stock) {
 
         StockEntity stockEntity = stockMapper.StockToStockEntity(stock);
         return stockMapper.stockEntityToStock(stockRepository.save(stockEntity));
     }
 
     @Override
-    public Optional<Stock> findById(Long stockId) {
+    public Optional<Stock> findByStockId(Long stockId) {
 
         return stockRepository.findById(stockId)
                 .map(stockMapper::stockEntityToStock);
          }
 
     @Override
-    public Optional<Stock> findByProductIdAndWarehouseId(Long productId, Long warehouseId) {
-        return stockRepository.findByProductIdAndWarehouseId(productId,warehouseId)
-                .map(stockMapper::stockEntityToStock);
+    @Transactional(readOnly = true)
+    public Optional<Stock> findByProductAndWarehouse(Long productId, Long warehouseId) {
+        try {
+            return stockRepository.findByProduct_ProductIdAndWarehouse_WarehouseId(productId, warehouseId)
+                    .map(stockMapper::stockEntityToStock);
+        } catch (Exception e) {
+            logger.warn("Error in findByProductIdAndWarehouseId: " + e.getMessage());
+            return Optional.empty();
+        }
     }
 
     @Override
-    public List<Stock> findAll() {
+    public List<Stock> getAllStocks() {
         return stockRepository.findAll().stream()
                 .map(stockMapper::stockEntityToStock)
                 .toList();

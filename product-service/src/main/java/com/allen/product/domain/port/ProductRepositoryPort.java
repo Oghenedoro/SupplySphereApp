@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepositoryPort {
-    List<Product> findAll();
-    Optional<Product> findById(Long id);
-    Product save(Product product);
+    List<Product> findAllProduct();
+    Optional<Product> findByProductId(Long id);
+    Product saveProduct(Product product);
     void deleteById(Long id);
     boolean existsBySku(String sku);
 

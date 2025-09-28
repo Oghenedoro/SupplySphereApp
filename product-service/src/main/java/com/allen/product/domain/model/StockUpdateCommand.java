@@ -8,7 +8,7 @@ public record StockUpdateCommand(
         Long productId,
         Long warehouseId,
         int quantityChange,
-        String productSku,
+       //String productSku,
         StockUpdateType updateType
 ) {
 }

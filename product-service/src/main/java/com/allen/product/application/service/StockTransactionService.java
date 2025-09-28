@@ -2,43 +2,49 @@ package com.allen.product.application.service;
 
 import com.allen.product.application.constants.StockUpdateType;
 import com.allen.product.application.usecase.StockTransactionUseCase;
+import com.allen.product.domain.model.Product;
 import com.allen.product.domain.model.Stock;
 import com.allen.product.domain.model.StockTransaction;
+import com.allen.product.domain.model.Warehouse;
 import com.allen.product.domain.port.StockTransactionRepositoryPort;
+import com.allen.product.domain.port.WarehouseRepositoryPort;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Lazy
 public class StockTransactionService implements StockTransactionUseCase {
     private final StockTransactionRepositoryPort transactionRepository;
-
-    public StockTransactionService(StockTransactionRepositoryPort transactionRepository) {
+    private final WarehouseRepositoryPort port;
+    public StockTransactionService(StockTransactionRepositoryPort transactionRepository, WarehouseRepositoryPort port) {
         this.transactionRepository = transactionRepository;
+
+        this.port = port;
     }
 
     @Override
     public StockTransaction recordTransaction(Stock stock, StockUpdateType type, int quantityChange) {
+        Optional<Warehouse> warehouse = port.findByWarehouseId(stock.warehouseId());
         StockTransaction transaction = new StockTransaction(
                 null,
                 stock.productId(),
-                stock.productSku(),
                 stock.warehouseId(),
-                stock.warehouseName(),
+                warehouse.get().name(),
                 type,
                 quantityChange,
                 stock.quantityOnHand(),
                 LocalDateTime.now()
         );
-        return transactionRepository.save(transaction);
+        return transactionRepository.saveTransaction(transaction);
     }
 
     @Override
     public StockTransaction save(StockTransaction transaction) {
-        return transactionRepository.save(transaction);
+        return transactionRepository.saveTransaction(transaction);
     }
 
     @Override
@@ -61,6 +67,6 @@ public class StockTransactionService implements StockTransactionUseCase {
     }
 
     public List<StockTransaction> findAll() {
-        return transactionRepository.findAll();
+        return transactionRepository.getAllTransactions();
     }
 }

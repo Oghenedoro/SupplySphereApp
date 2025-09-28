@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-23T20:14:19+0200",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.7 (OpenLogic)"
+    date = "2025-09-28T03:03:45+0200",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.42.50.v20250628-1110, environment: Java 21.0.7 (Eclipse Adoptium)"
 )
 @Component
 public class AppProductMapperImpl implements AppProductMapper {
@@ -75,7 +75,6 @@ public class AppProductMapperImpl implements AppProductMapper {
 
         Long stockId = null;
         Long productId = null;
-        String productSku = null;
         Long warehouseId = null;
         String warehouseName = null;
         Integer quantityOnHand = null;
@@ -84,12 +83,13 @@ public class AppProductMapperImpl implements AppProductMapper {
 
         stockId = stock.stockId();
         productId = stock.productId();
-        productSku = stock.productSku();
         warehouseId = stock.warehouseId();
         warehouseName = stock.warehouseName();
         quantityOnHand = stock.quantityOnHand();
         quantityReserved = stock.quantityReserved();
         lastUpdated = stock.lastUpdated();
+
+        String productSku = null;
 
         StockDTO stockDTO = new StockDTO( stockId, productId, productSku, warehouseId, warehouseName, quantityOnHand, quantityReserved, lastUpdated );
 
@@ -116,7 +116,6 @@ public class AppProductMapperImpl implements AppProductMapper {
 
         Long stockId = null;
         Long productId = null;
-        String productSku = null;
         Long warehouseId = null;
         String warehouseName = null;
         Integer quantityOnHand = null;
@@ -125,14 +124,13 @@ public class AppProductMapperImpl implements AppProductMapper {
 
         stockId = stockDTO.stockId();
         productId = stockDTO.productId();
-        productSku = stockDTO.productSku();
         warehouseId = stockDTO.warehouseId();
         warehouseName = stockDTO.warehouseName();
         quantityOnHand = stockDTO.quantityOnHand();
         quantityReserved = stockDTO.quantityReserved();
         lastUpdated = stockDTO.lastUpdated();
 
-        Stock stock = new Stock( stockId, productId, productSku, warehouseId, warehouseName, quantityOnHand, quantityReserved, lastUpdated );
+        Stock stock = new Stock( stockId, productId, warehouseId, warehouseName, quantityOnHand, quantityReserved, lastUpdated );
 
         return stock;
     }

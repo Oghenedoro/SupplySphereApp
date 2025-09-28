@@ -27,8 +27,13 @@ public class ProductController {
 
         List<ProductDto> productDtos = productUseCase.getAllProducts()
                 .stream().map(productMapper::productToProductDto)
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(productDtos, HttpStatus.OK);
+                .toList();
+        if(productDtos.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.ok(productDtos);
+        }
+
     }
 
     @GetMapping("/{id}")

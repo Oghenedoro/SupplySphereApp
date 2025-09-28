@@ -4,6 +4,7 @@ import com.allen.product.application.constants.StockUpdateType;
 import com.allen.product.application.usecase.StockTransactionUseCase;
 import com.allen.product.application.usecase.StockUseCase;
 import com.allen.product.domain.model.*;
+import com.allen.product.domain.port.ProductRepositoryPort;
 import com.allen.product.domain.port.StockRepositoryPort;
 import com.allen.product.domain.port.WarehouseRepositoryPort;
 import jakarta.transaction.Transactional;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -22,13 +24,15 @@ public class StockService implements StockUseCase {
     private final StockTransactionUseCase transactionService;
     private final StockRepositoryPort stockRepositoryPort;
     private final WarehouseRepositoryPort warehouseRepositoryPort;
+    private final ProductRepositoryPort productRepositoryPort;
 
     public StockService(@Lazy StockTransactionUseCase transactionService,
                         StockRepositoryPort stockRepositoryPort,
-                        WarehouseRepositoryPort warehouseRepositoryPort) {
+                        WarehouseRepositoryPort warehouseRepositoryPort, ProductRepositoryPort productRepositoryPort) {
         this.transactionService = transactionService;
         this.stockRepositoryPort = stockRepositoryPort;
         this.warehouseRepositoryPort = warehouseRepositoryPort;
+        this.productRepositoryPort = productRepositoryPort;
     }
     @Override
     public StockStatus trackStock(Long productId, Long warehouseId, int lowStockThreshold) {
@@ -47,7 +51,8 @@ public class StockService implements StockUseCase {
     @Override
     @Transactional
     public Stock createOrUpdateStock(StockUpdateCommand command) {
-        Stock updatedStock = stockRepositoryPort.findByProductIdAndWarehouseId(command.productId(), command.warehouseId())
+
+        Stock updatedStock = stockRepositoryPort.findByProductAndWarehouse(command.productId(), command.warehouseId())
                 .map(existingStock -> updateExistingStock(existingStock, command))
                 .orElseGet(() -> createNewStock(command));
 
@@ -58,16 +63,17 @@ public class StockService implements StockUseCase {
 
     private Stock createNewStock(StockUpdateCommand command) {
         // Fetch warehouse info only
-        Warehouse warehouse = warehouseRepositoryPort.findById(command.warehouseId())
+        Warehouse warehouse = warehouseRepositoryPort.findByWarehouseId(command.warehouseId())
                 .orElseThrow(() -> new IllegalArgumentException("Warehouse not found: " + command.warehouseId()));
+        Product product = productRepositoryPort.findByProductId(command.productId())
+                .orElseThrow(() -> new IllegalArgumentException("product not found: " + command.warehouseId()));
 
         // Start from initial quantity 0
         int newQuantity = calculateNewQuantity(0, command.quantityChange(), command.updateType());
 
         Stock newStock = new Stock(
                 null,
-                command.productId(),
-                command.productSku(),   // SKU passed from command
+                product.productId(),
                 warehouse.warehouseId(),
                 warehouse.name(),
                 newQuantity,
@@ -75,7 +81,7 @@ public class StockService implements StockUseCase {
                 LocalDate.now()
         );
 
-        return stockRepositoryPort.save(newStock);
+        return stockRepositoryPort.saveStock(newStock);
     }
 
 
@@ -91,14 +97,19 @@ public class StockService implements StockUseCase {
         Stock newStock = new Stock(
                 existingStock.stockId(),
                 existingStock.productId(),
-                existingStock.productSku(),
                 existingStock.warehouseId(),
                 existingStock.warehouseName(),
                 newQuantity,
                 existingStock.quantityReserved(),
                 LocalDate.now() // better to refresh timestamp
         );
-        return stockRepositoryPort.save(newStock);
+        return stockRepositoryPort.saveStock(newStock);
+    }
+
+    private void validateStockInputs(Stock stock, Long warehouseId) {
+        Objects.requireNonNull(stock, "Stock cannot be null");
+        Objects.requireNonNull(stock.productId(), "Product ID is required");
+        Objects.requireNonNull(warehouseId, "Warehouse ID is required");
     }
 
     @Override
@@ -109,17 +120,17 @@ public class StockService implements StockUseCase {
 
     @Override
     public List<Stock> getStockList() {
-        return stockRepositoryPort.findAll();
+        return stockRepositoryPort.getAllStocks();
     }
 
     @Override
     public Optional<Stock> findByProductIdAndWarehouseId(Long productId, Long warehouseId) {
-        return stockRepositoryPort.findByProductIdAndWarehouseId(productId, warehouseId);
+        return stockRepositoryPort.findByProductAndWarehouse(productId, warehouseId);
     }
 
     @Override
     public Optional<Stock> findById(Long stockId) {
-        return stockRepositoryPort.findById(stockId);
+        return stockRepositoryPort.findByStockId(stockId);
     }
 
     @Override
@@ -133,7 +144,6 @@ public class StockService implements StockUseCase {
         return new Stock(
                 stock.stockId(),
                 stock.productId(),
-                stock.productSku(),
                 stock.warehouseId(),
                 stock.warehouseName(),
                 stock.quantityOnHand(),

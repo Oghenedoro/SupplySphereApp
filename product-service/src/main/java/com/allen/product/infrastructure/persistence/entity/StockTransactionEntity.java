@@ -2,17 +2,17 @@ package com.allen.product.infrastructure.persistence.entity;
 
 import com.allen.product.application.constants.StockUpdateType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "stock_transactions")
+@Table(name = "stock_transaction")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class StockTransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +20,6 @@ public class StockTransactionEntity {
 
     @Column(name = "product_id", nullable = false)
     private Long productId;
-
-    @Column(name = "product_sku", nullable = false)
-    private String productSku;
 
     @Column(name = "warehouse_id", nullable = false)
     private Long warehouseId;
@@ -43,75 +40,4 @@ public class StockTransactionEntity {
     @Column(name = "transaction_date", nullable = false)
     private LocalDateTime transactionDate;
 
-    public Long getStockTransactionId() {
-        return stockTransactionId;
-    }
-
-    public void setStockTransactionId(Long stockTransactionId) {
-        this.stockTransactionId = stockTransactionId;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public String getProductSku() {
-        return productSku;
-    }
-
-    public void setProductSku(String productSku) {
-        this.productSku = productSku;
-    }
-
-    public Long getWarehouseId() {
-        return warehouseId;
-    }
-
-    public void setWarehouseId(Long warehouseId) {
-        this.warehouseId = warehouseId;
-    }
-
-    public String getWarehouseName() {
-        return warehouseName;
-    }
-
-    public void setWarehouseName(String warehouseName) {
-        this.warehouseName = warehouseName;
-    }
-
-    public StockUpdateType getType() {
-        return type;
-    }
-
-    public void setType(StockUpdateType type) {
-        this.type = type;
-    }
-
-    public Integer getQuantityChange() {
-        return quantityChange;
-    }
-
-    public void setQuantityChange(Integer quantityChange) {
-        this.quantityChange = quantityChange;
-    }
-
-    public Integer getResultingQuantity() {
-        return resultingQuantity;
-    }
-
-    public void setResultingQuantity(Integer resultingQuantity) {
-        this.resultingQuantity = resultingQuantity;
-    }
-
-    public LocalDateTime getTransactionDate() {
-        return transactionDate;
-    }
-
-    public void setTransactionDate(LocalDateTime transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-}
+  }

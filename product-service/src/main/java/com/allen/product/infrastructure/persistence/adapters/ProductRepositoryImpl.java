@@ -5,6 +5,8 @@ import com.allen.product.domain.port.ProductRepositoryPort;
 import com.allen.product.infrastructure.persistence.entity.ProductEntity;
 import com.allen.product.infrastructure.persistence.mapper.ProductMapper;
 import com.allen.product.infrastructure.persistence.springdataJpaRepository.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -14,9 +16,10 @@ import java.util.stream.Collectors;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepositoryPort {
-    
+
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private static final Logger logger = LoggerFactory.getLogger(ProductRepositoryImpl.class);
 
     @Lazy
     public ProductRepositoryImpl(ProductRepository productRepository, ProductMapper productMapper) {
@@ -25,11 +28,10 @@ public class ProductRepositoryImpl implements ProductRepositoryPort {
     }
 
     @Override
-    public List<Product> findAll() {
-
+    public List<Product> findAllProduct() {
         List<ProductEntity> products = productRepository.findAll();
 
-        // Ensure 'productEntities' is not null or empty
+        // Ensure 'products' is not null or empty
         if (products == null || products.isEmpty()) {
             throw new RuntimeException("No products found in the database.");
         }
@@ -39,9 +41,9 @@ public class ProductRepositoryImpl implements ProductRepositoryPort {
                 .collect(Collectors.toList()); // Collect results into a list*/
         return productList;
     }
-       
+
     @Override
-    public Optional<Product> findById(Long id) {
+    public Optional<Product> findByProductId(Long id) {
         try {
             return productRepository.findById(id)
                     .map(product -> productMapper.productEntityToProduct(product));
@@ -49,9 +51,8 @@ public class ProductRepositoryImpl implements ProductRepositoryPort {
             throw new RuntimeException("Error finding product with id: " + id, e);
         }
     }
-
     @Override
-    public Product save(Product product) {
+    public Product saveProduct(Product product) {
 
         ProductEntity productEntity = productMapper.productToEntity(product);
         return productMapper.productEntityToProduct(productRepository.save(productEntity));

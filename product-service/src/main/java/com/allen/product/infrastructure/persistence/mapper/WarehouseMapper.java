@@ -1,5 +1,6 @@
 package com.allen.product.infrastructure.persistence.mapper;
 
+import com.allen.product.application.dto.WarehouseDTO;
 import com.allen.product.domain.model.Warehouse;
 import com.allen.product.infrastructure.persistence.entity.WarehouseEntity;
 import org.mapstruct.Mapper;
@@ -26,4 +27,5 @@ public interface WarehouseMapper {
             @Mapping(target = "contactInfo", source = "contactInfo")
     })
     WarehouseEntity warehouseToWarehouseEntity(Warehouse warehouse);
+
 }

@@ -24,7 +24,7 @@ public class WarehouseRepositoryImpl implements WarehouseRepositoryPort {
     }
 
     @Override
-    public Optional<Warehouse> findById(Long warehouseId) {
+    public Optional<Warehouse> findByWarehouseId(Long warehouseId) {
         return warehouseRepository.findById(warehouseId)
                 .map(warehouseMapper::warehouseEntityToWarehouse);
     }
@@ -36,7 +36,7 @@ public class WarehouseRepositoryImpl implements WarehouseRepositoryPort {
     }
 
     @Override
-    public List<Warehouse> findAll() {
+    public List<Warehouse> findAllWarehouse() {
         return warehouseRepository.findAll().stream()
                 .map(warehouseMapper::warehouseEntityToWarehouse)
                 .toList();

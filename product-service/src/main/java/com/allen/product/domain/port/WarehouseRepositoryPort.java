@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface WarehouseRepositoryPort {
 
-    Optional<Warehouse> findById(Long idWarehouse);
+    Optional<Warehouse> findByWarehouseId(Long idWarehouse);
     Warehouse create(Warehouse warehouse);
-    List<Warehouse> findAll();
+    List<Warehouse> findAllWarehouse();
     void deleteWarehouse(Long warehouseId);
 }

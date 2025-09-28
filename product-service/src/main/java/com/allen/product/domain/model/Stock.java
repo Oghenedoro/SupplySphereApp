@@ -5,7 +5,6 @@ import java.time.LocalDate;
 public record Stock(
         Long stockId,
         Long productId,
-        String productSku,
         Long warehouseId,
         String warehouseName,
         Integer quantityOnHand,

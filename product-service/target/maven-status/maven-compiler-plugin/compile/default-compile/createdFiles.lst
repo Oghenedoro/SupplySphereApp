@@ -1,9 +1,12 @@
 com\allen\product\application\service\ProductService.class
 com\allen\product\infrastructure\persistence\adapters\StockTransactionRepositoryImpl.class
+com\allen\product\application\service\WarehouseService.class
+com\allen\product\application\applicationMapper\AppStockMapper.class
 com\allen\product\infrastructure\persistence\mapper\StockTransactionMapperImpl.class
 com\allen\product\infrastructure\web\rest\StockController.class
 com\allen\product\application\usecase\StockUseCase.class
 com\allen\product\infrastructure\persistence\entity\StockTransactionEntity$StockTransactionEntityBuilder.class
+com\allen\product\infrastructure\web\rest\WarehouseController.class
 com\allen\product\infrastructure\persistence\mapper\StockMapperImpl.class
 com\allen\product\application\service\StockService.class
 com\allen\product\application\service\StockTransactionService.class
@@ -33,11 +36,14 @@ com\allen\product\infrastructure\persistence\entity\ProductEntity$ProductEntityB
 com\allen\product\infrastructure\persistence\entity\StockEntity.class
 com\allen\product\application\service\StockService$1.class
 com\allen\product\domain\port\StockRepositoryPort.class
+com\allen\product\application\applicationMapper\AppWarehouseMapper.class
 com\allen\product\infrastructure\persistence\entity\WarehouseEntity.class
 com\allen\product\domain\model\StockTransaction.class
 com\allen\product\application\dto\StockDTO.class
+com\allen\product\application\applicationMapper\AppStockMapperImpl.class
 com\allen\product\infrastructure\persistence\springdataJpaRepository\StockRepository.class
 com\allen\product\infrastructure\persistence\mapper\ProductMapper.class
+com\allen\product\application\applicationMapper\AppWarehouseMapperImpl.class
 com\allen\product\infrastructure\persistence\entity\StockTransactionEntity.class
 com\allen\product\application\applicationMapper\AppProductMapper.class
 com\allen\product\application\facade\StockTransactionFacade.class

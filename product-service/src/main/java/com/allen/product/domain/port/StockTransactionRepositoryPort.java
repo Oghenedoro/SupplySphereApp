@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface StockTransactionRepositoryPort {
 
-    StockTransaction save(StockTransaction transaction);
+    StockTransaction saveTransaction(StockTransaction transaction);
     List<StockTransaction> findByProductId(Long productId);
     List<StockTransaction> findByWarehouseId(Long warehouseId);
     List<StockTransaction> findByProductIdAndWarehouseId(Long productId, Long warehouseId);
     List<StockTransaction> findByProductSku(String productSku);
-    List<StockTransaction> findAll();
+    List<StockTransaction> getAllTransactions();
 
 }

@@ -6,10 +6,10 @@ import java.util.Optional;
 
 public interface StockRepositoryPort {
 
-    Stock save(Stock stock);
-    Optional<Stock> findById(Long stockId);
-    Optional<Stock> findByProductIdAndWarehouseId(Long productId, Long warehouseId);
-    List<Stock> findAll();
+    Stock saveStock(Stock stock);
+    Optional<Stock> findByStockId(Long stockId);
+    Optional<Stock> findByProductAndWarehouse(Long productId, Long warehouseId);
+    List<Stock> getAllStocks();
     void deleteById(Long stockId);
 
 }

@@ -9,8 +9,9 @@ public interface WarehouseUseCase {
 
     Optional<Warehouse> findById(Long id);
     Warehouse createWarehouse(Warehouse warehouse);
-    List<Warehouse> findAll();
+    List<Warehouse> getWarehouses();
     Warehouse updateWarehouse(Long warehouseId, Warehouse warehouse);
     void deleteWarehouse(Long warehouseId);
+    void assignManager(Long warehouseId, String managerName);
 }
 

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-23T20:14:19+0200",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.7 (OpenLogic)"
+    date = "2025-09-28T03:03:45+0200",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.42.50.v20250628-1110, environment: Java 21.0.7 (Eclipse Adoptium)"
 )
 @Component
 public class WarehouseMapperImpl implements WarehouseMapper {
